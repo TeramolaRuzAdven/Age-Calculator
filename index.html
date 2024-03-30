@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  
+  <title>Frontend Mentor | Age calculator app</title>
+
+  <!--CSS styling section-->
+  <style>
+    /*.attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); }*/
+
+  :root{
+    --White: hsl(0, 0%, 100%);
+    --Off-white: hsl(0, 0%, 94%);
+    --Light-grey: hsl(0, 0%, 86%);
+    --Smokey-grey: hsl(0, 1%, 44%);
+    --Off-black: hsl(0, 0%, 8%);
+    --Purple: hsl(259, 100%, 65%);
+    --Light-red: hsl(0, 100%, 67%);
+  }
+  @font-face{
+    font-family:Pop;
+    src: url(./assets/fonts/Poppins-Regular.ttf)
+  }
+  * {
+    font-family: Pop !important;
+  }
+  body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--Off-white);
+  }
+  .container{
+    background-color: var(--White);
+    width: 420px;
+    max-width: 100%;
+    padding: 30px;
+    position: relative;
+    border-bottom-right-radius: 150px;
+  }
+  input{
+    width: 70px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid var(--Off-white);
+    border:none;
+    outline: none;
+  }
+  input:focus{
+    border: 2px solid var(--Purple);
+  }
+
+  small {
+    color: red;
+    font-size:0.6rem;
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+  .submit-btn{
+    width: 70px;
+    height: 70px;
+    padding: 20px;
+    display: flex;
+    background-color: var(--Purple);
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 50%;
+    position: absolute;
+    right: 30px;
+    top: 60px;
+    cursor: pointer;
+  }
+  .submit-btn:hover{
+    background-color: black;
+  }
+  .output span{
+    font-size: 2.75rem;
+    color: var(--Purple);
+    font-style: italic;
+  }
+  .input-container{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    margin-bottom: 20px;
+  }
+  .input-flex{
+    display: flex;
+    border-bottom: 2px solid var(--Off-white);
+    margin-bottom: 20px;
+  }
+  </style>
+  
+  
+</head>
+<body>
+
+  
+  <!--HTML section-->
+  <div class="container">
+    <div class="input-flex">
+      <div class="input-container">
+        <span>Day</span>
+        <input type="number" id="day">
+        <small class="error-day"></small>
+      </div>
+      <div class="input-container">
+        <span>Month</span>
+        <input type="number" id="month">
+        <small class="error-month"></small>
+      </div>
+      <div class="input-container">
+        <span>Year</span>
+        <input type="number" id="year">
+        <small class="error-year"></small>
+      </div>
+    </div>
+    <button class="submit-btn">
+      <img src="./assets/images/icon-arrow.svg" alt="">
+    </button>
+    <div class="output">
+      <h1><span class="output-year">--</span>years</h1>
+      <h1><span class="output-month">--</span>months</h1>
+      <h1><span class="output-day">--</span>days</h1>
+    </div>
+  </div>
+
+  
+  
+<!--JS app section-->
+  <script>
+    // OUTPUT ELEMENTS
+    const output_year = document.querySelector(".output-year");
+    const output_month = document.querySelector(".output-month");
+    const output_day = document.querySelector(".output-day");
+    const submit_btn = document.querySelector(".submit-btn");
+    // INPUT ELEMENTS
+    let isValid = false;
+    const input_year = document.querySelector("#year");
+    const input_day = document.querySelector("#day");
+    const input_month = document.querySelector("#month");
+    //ERROR ELEMENTS
+    const error_day = document.querySelector(".error-day");
+    const error_month = document.querySelector(".error-month");
+    const error_year = document.querySelector(".error-year");
+    submit_btn.addEventListener('click', CalculateDate)
+    input_day.addEventListener("input", (e) => {
+      if (+input_day.value > 31) {
+        error_day.textContent = "Must be a valid date you bi-";
+        isValid = false;
+        return;
+      }
+      else {
+        isValid = true;
+        error_day.textContent = "";
+      }
+      if(+input_day.value === 0) {
+        isValid = false;
+        error_day.textContent = "this field is required";
+        isValid = false;
+        return;
+      } else {
+        error_day.textContent = "";
+      }
+    });
+
+    input_month.addEventListener("input", (e) => {
+      if (+input_month.value > 12) {
+        error_month.textContent = "Must be a valid date you bi-";
+        isValid = false;
+        return;
+      }
+      else {
+        isValid = true;
+        error_month.textContent = "";
+      }
+      if(+input_month.value === 0) {
+        isValid = false;
+        error_month.textContent = "this field is required";
+        isValid = false;
+        return;
+      } else {
+        error_month.textContent = "";
+      }
+    });
+
+    input_year.addEventListener("input", (e) => {
+      if (+input_year.value > 2025) {
+        error_year.textContent = "Must be a valid date you bi-";
+        isValid = false;
+        return;
+      }
+      else {
+        isValid = true;
+        error_year.textContent = "";
+      }
+      if(+input_year.value === 0) {
+        isValid = false;
+        error_year.textContent = "this field is required";
+        isValid = false;
+        return;
+      } else {
+        error_year.textContent = "";
+      }
+    });
+
+    function CalculateDate(){
+      if (isValid) {
+        let birthday = `${input_month.value}/${input_day.value}/${input_year.value}`;
+        console.log(birthday);
+        let birthdayObj = new Date(birthday);
+        let ageDiffMill = Date.now() - birthdayObj;
+        let ageDate = new Date(ageDiffMill);
+        let ageYears = ageDate.getUTCFullYear() - 1970;
+        let ageMonth = ageDate.getUTCMonth();
+        let ageDay = ageDate.getUTCDay() - 1;
+        output_day.textContent = ageDay;
+        output_month.textContent = ageMonth;
+        output_year.textContent = ageYears;
+      } else {
+        alert("error")
+      }
+    }
+  </script>
+  
+  
+  
+  
+  
+  <!--<div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+    Coded by <a href="#">Your Name Here</a>.-->
+  </div>
+</body>
+</html>
